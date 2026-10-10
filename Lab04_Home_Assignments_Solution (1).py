@@ -1,8 +1,5 @@
 from collections import deque
 
-# ============================================================
-# LAB 04 HOME TASK 1: CYBERSECURITY NETWORK (BFS and DFS)
-# ============================================================
 network = {
     "N01": ["N02"],
     "N02": ["N01", "N03", "N04", "N30"],
@@ -145,10 +142,7 @@ def run_home_task_1():
         print(f"Isolate {device_names[cand]} ({cand}): infection reaches {len(reached)} of 30 devices")
     print("Best choice: N27 WiFi-AP; Guest-Laptop-1 has only one neighbour (N27), so the infection stops at 1 device.")
 
-# ============================================================
-# LAB 04 HOME TASK 2: SERVER FILE SYSTEM (DFS and BFS)
-# ============================================================
-# Child items are listed in the exact order given by the manual.
+
 file_system = {
     "/": ["home", "var", "etc", "tmp", "opt"],
     "home": ["alice", "bob", "sara", "shared"],
@@ -187,7 +181,7 @@ file_sizes = {
     "session_a1.tmp":1, ".hidden_miner":3400, "scan.sh":2, "monitor.py":9
 }
 
-# Convert basename-based dataset into canonical full-path nodes.
+
 tree = {}
 def make_tree(path, key):
     tree.setdefault(path, [])
@@ -232,7 +226,7 @@ def is_suspicious(path):
     )
 
 def size_of(node):
-    if not tree[node]:  # file leaf
+    if not tree[node]:  
         return file_sizes.get(basename(node), 0)
     return sum(size_of(child) for child in tree[node])
 
@@ -310,7 +304,7 @@ def run_home_task_2():
             seen.add(node)
             order.append(node)
             parent.setdefault(node, par)
-            # Real children first, then symbolic-link targets.
+            
             for child in tree[node]:
                 visit(child, node)
             for target in links.get(node, []):
@@ -318,7 +312,7 @@ def run_home_task_2():
         visit("/")
         return order, parent
 
-    # D9: DFS WITHOUT visited set (count visits; limit protects from a real infinite loop)
+  
     def count_without_visited(limit=100000):
         visits = []
         def visit(node):
@@ -341,7 +335,7 @@ def run_home_task_2():
     except RecursionError:
         print("Without visited set: INFINITE LOOP (a cycle exists).")
 
-    # D10: DFS WITH visited set
+  
     linked_order, linked_parent = linked_dfs(True)
     print("\nWith visited set: unique items visited =", len(linked_order))
     www_path = []
@@ -361,7 +355,7 @@ def run_home_task_2():
     shell_path = shell_path[::-1]
     print("DFS path to shell.php:", " -> ".join(shell_path), "| hops =", len(shell_path)-1)
 
-    # BFS path on the graph WITH the links added
+   
     graph_links = {n: list(c) + links.get(n, []) for n, c in tree.items()}
     bfs_parent = {"/": None}
     q = deque(["/"])
